@@ -23,19 +23,60 @@ class TodoList extends Component {
     })
   }
 
+startEditing = () => {
+    this.setState({
+      isEditing: true
+    });
+  }
+ 
+  finishEditing = () => {
+    this.setState({
+      isEditing: false
+    });
+  }
+
   render() {
-    const {isCompleted} = this.state;
+
+    const {isEditing, isCompleted} = this.state;
 
     return (
-      <View style={styles.container}>
+         <View style={styles.container}>
+        <View style={styles.rowContainer}>
         <TouchableOpacity onPress={this.toggleItem}>
-          <View style={[styles.circle, isCompleted ? styles.completeCicle : styles.incompleteCircle]} />
-        </TouchableOpacity>
-        <Text style={[styles.text, isCompleted ? styles.strikeText : styles.unstrikeText]}>Todo List will show here</Text>
+        <View style={[styles.circle, isCompleted ? styles.completeCircle : styles.incompleteCircle]}>
+
+        </View>
+      </TouchableOpacity>
+        <Text style={[styles.text, isCompleted ? styles.strikeText : styles.unstrikeText]}>
+          Todo List will show here
+        </Text>
+        </View>
+        {isEditing ? (
+          <View style={styles.buttons}>
+          <TouchableOpacity onPressOut={this.finishEditing}>>
+            <View style={styles.buttonContainer}>
+            <Text style={styles.buttonText}>✅</Text>
+            </View>
+          </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.buttons}>
+          <TouchableOpacity onPressOut={this.startEditing}>>
+            <View style={styles.buttonContainer}>
+            <Text style={styles.buttonText}>✏</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.buttonContainer}>
+            <Text style={styles.buttonText}>❌</Text>
+            </View>
+          </TouchableOpacity>
+          </View>
+        )}
       </View>
-    );
+    )
   }
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -43,8 +84,22 @@ const styles = StyleSheet.create({
       borderBottomColor: '#bbb',
       borderBottomWidth: StyleSheet.hairlineWidth,
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'space-between'
     },
+    rowContainer: {
+        flexDirection: 'row',
+        width: width / 2,
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      },
+      buttons: {
+        flexDirection: 'row',
+      },
+      buttonContainer: {
+        marginVertical: 10,
+        marginHorizontal: 10,
+      },
     text: {
       fontWeight: '500',
       fontSize: 18,
